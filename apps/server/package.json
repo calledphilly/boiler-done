@@ -25,6 +25,7 @@
     "fastify-type-provider-zod": "^6.0.0",
     "mjml": "^4.15.3",
     "nodemailer": "^7.0.6",
-    "radash": "^12.1.1"
+    "radash": "^12.1.1",
+    "stripe": "^18.5.0"
   }
 }
