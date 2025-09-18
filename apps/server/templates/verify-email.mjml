@@ -1,0 +1,12 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px" font-weight="bold"> Vérification de votre email, {{name}} ! </mj-text>
+        <mj-text> Merci de rejoindre notre plateforme. Cliquez sur le bouton ci-dessous pour confirmer votre adresse email et activer votre compte. </mj-text>
+        <mj-button href="{{url}}" background-color="#346DF1" color="#ffffff"> Vérifier mon email </mj-button>
+        <mj-text font-size="12px" color="#888888"> Si vous n'avez pas créé de compte, ignorez ce message. </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

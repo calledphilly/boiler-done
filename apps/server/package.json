@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "db:generate": "bun x @better-auth/cli generate --output ../../packages/db/src/schema/auth.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/mjml": "^4.7.4",
+    "@types/nodemailer": "^7.0.1",
+    "@workspace/typescript": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "@workspace/db": "workspace:*",
+    "better-auth": "^1.3.11",
+    "fastify": "^5.6.0",
+    "fastify-plugin": "^5.0.1",
+    "fastify-type-provider-zod": "^6.0.0",
+    "mjml": "^4.15.3",
+    "nodemailer": "^7.0.6",
+    "radash": "^12.1.1"
+  }
+}

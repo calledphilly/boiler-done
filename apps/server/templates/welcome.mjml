@@ -1,0 +1,15 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px" font-weight="bold">
+          Bienvenue, {{ name }} !
+        </mj-text>
+        <mj-text>
+          Merci de rejoindre notre plateforme. Votre compte est maintenant
+          actif.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
