@@ -13,7 +13,7 @@ export interface MailOptions<T> {
 }
 
 export abstract class Mailer<T extends Record<string, any>> {
-  protected transporter;
+  protected transporter: ReturnType<typeof nodemailer.createTransport>;
   protected abstract template: string;
 
   constructor() {
@@ -34,7 +34,7 @@ export abstract class Mailer<T extends Record<string, any>> {
   /** Remplace les placeholders {{key}} par les valeurs dans data */
   protected getHydratedHtml(data: T): string {
     const content = this.getTemplate();
-    let html = template(content, data);
+    const html = template(content, data);
     return mjml2html(html).html;
   }
 

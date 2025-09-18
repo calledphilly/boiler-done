@@ -8,7 +8,7 @@ import {
     CardContent,
 } from "~/components/ui/card"
 import { Button } from "~/components/ui/button"
-import { Link, useLocation } from "react-router"
+import { Link, Navigate, useLocation } from "react-router"
 import { useMemo } from "react"
 import { sendVerificationEmail, useSession } from "~/utils/auth"
 
@@ -49,23 +49,26 @@ export function VerifyEmail({
     }
 
 
+    if (!session?.user?.emailVerified && email) {
+        return (
+            <div className={cn("flex flex-col gap-6", className)} {...props}>
+                <Card className="text-center">
+                    <CardHeader>
+                        <CardTitle className="text-xl">Check your inbox</CardTitle>
+                        <CardDescription>
+                            We’ve sent a verification link to <b>{email || "your email"}</b>.
+                            Please click the link to activate your account.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardFooter>
+                        <Button asChild className="mx-auto mb-6">
+                            <Link to="/sign-up">Back to sign up</Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div >
+        )
+    }
 
-    return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <Card className="text-center">
-                <CardHeader>
-                    <CardTitle className="text-xl">Check your inbox</CardTitle>
-                    <CardDescription>
-                        We’ve sent a verification link to <b>{email || "your email"}</b>.
-                        Please click the link to activate your account.
-                    </CardDescription>
-                </CardHeader>
-                <CardFooter>
-                    <Button asChild className="mx-auto mb-6">
-                        <Link to="/sign-up">Back to sign up</Link>
-                    </Button>
-                </CardFooter>
-            </Card>
-        </div >
-    )
+    return <Navigate to="/sign-up" replace />
 }

@@ -1,9 +1,9 @@
-import { SignedIn } from "~/components/auth/signed-in";
+import { SignedIn } from "~/components/guards/signed-in";
 import type { Route } from "./+types/home";
 import { Link } from "react-router";
 import SignOut from "~/components/sign-out";
 import { Button } from "~/components/ui/button";
-import { SignedOut } from "~/components/auth/signed-out";
+import { SignedOut } from "~/components/guards/signed-out";
 
 export function meta({ }: Route.MetaArgs) {
   return [

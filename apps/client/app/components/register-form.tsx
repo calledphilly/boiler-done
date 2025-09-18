@@ -60,7 +60,7 @@ export function RegisterForm({
 
     const signWithGithub = () => signIn.social({
         provider: 'github',
-        callbackURL: params.get('redirect') || '/'
+        callbackURL: window.location.origin + (params.get('redirect') || '')
     })
 
 
@@ -68,7 +68,7 @@ export function RegisterForm({
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Sign up</CardTitle>
+                    <CardTitle className="text-xl">Welcome</CardTitle>
                     <CardDescription>
                         Sign up with your Github account
                     </CardDescription>
@@ -156,7 +156,7 @@ export function RegisterForm({
                 By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
                 and <a href="#">Privacy Policy</a>.
             </div>
-        </div>
+        </div >
     )
 }
 

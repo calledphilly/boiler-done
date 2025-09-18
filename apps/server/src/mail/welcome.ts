@@ -1,4 +1,4 @@
-import { Mailer } from '~/mail';
+import { Mailer } from '.';
 
 interface MailData {
   name: string;

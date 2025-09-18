@@ -64,13 +64,13 @@ export function LoginForm({
         form.reset()
       }
     } catch (e) {
-      toast.error('An error occured during sign up.');
+      toast.error('An error occured during sign in.');
     }
   }
 
   const signWithGithub = () => signIn.social({
     provider: 'github',
-    callbackURL: params.get('redirect') || '/'
+    callbackURL: window.location.origin + (params.get('redirect') || '')
   })
 
 
@@ -80,7 +80,7 @@ export function LoginForm({
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>
-            Login with your Discord account
+            Login with your Github account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -127,6 +127,7 @@ export function LoginForm({
                         <FormLabel htmlFor="password">Password</FormLabel>
                         <Link
                           to="/forgot-password"
+                          state={{ email: form.getValues().email }}
                           className="ml-auto text-sm underline-offset-4 hover:underline"
                         >
                           Forgot your password?
