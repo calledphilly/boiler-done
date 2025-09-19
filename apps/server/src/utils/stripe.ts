@@ -1,12 +1,11 @@
 import Stripe from 'stripe';
 
-const { STRIPE_SECRET_KEY } = process.env;
+const { STRIPE_CLIENT_SECRET } = process.env;
 
-if (!STRIPE_SECRET_KEY) {
-	throw new Error('STRIPE_SECRET_KEY is not defined');
+if (!STRIPE_CLIENT_SECRET) {
+  throw new Error('STRIPE_CLIENT_SECRET is not defined');
 }
 
-export const stripeClient = new Stripe(STRIPE_SECRET_KEY, {
-	apiVersion: '2025-08-27.basil',
+export const stripeClient = new Stripe(STRIPE_CLIENT_SECRET, {
+  apiVersion: '2025-08-27.basil',
 });
-

@@ -8,6 +8,13 @@
       "when": 1758153281533,
       "tag": "0000_known_abomination",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1758285371730,
+      "tag": "0001_rainy_living_mummy",
+      "breakpoints": true
     }
   ]
 }
