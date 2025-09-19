@@ -1,13 +1,19 @@
+import { stripeClient } from '@better-auth/stripe/client';
 import { createAuthClient } from 'better-auth/react';
 
 export const {
-  signOut,
-  signIn,
-  signUp,
-  useSession,
-  sendVerificationEmail,
-  requestPasswordReset,
-  resetPassword,
+	signOut,
+	signIn,
+	signUp,
+	useSession,
+	sendVerificationEmail,
+	requestPasswordReset,
+	resetPassword,
 } = createAuthClient({
-  baseURL: 'http://localhost:3000',
+	baseURL: 'http://localhost:3000',
+	plugins: [
+		stripeClient({
+			subscription: true, //if you want to enable subscription management
+		}),
+	],
 });
