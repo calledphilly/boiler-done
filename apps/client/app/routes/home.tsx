@@ -1,8 +1,6 @@
 import { SignedIn } from "~/components/guards/signed-in";
 import type { Route } from "./+types/home";
-import { Link } from "react-router";
-import SignOut from "~/components/sign-out";
-import { Button } from "~/components/ui/button";
+import { Navigate } from "react-router";
 import { SignedOut } from "~/components/guards/signed-out";
 
 export function meta({ }: Route.MetaArgs) {
@@ -16,13 +14,10 @@ export default function Home() {
   return (
     <div className='flex min-h-svh flex-col items-center justify-center'>
       <SignedIn>
-        <SignOut />
-        <Button>Dashboard</Button>
+        <Navigate to='/profile' />
       </SignedIn>
       <SignedOut>
-        <Button asChild>
-          <Link to={'/sign-in'}>Sign In</Link>
-        </Button>
+        <Navigate to='/sign-in' />
       </SignedOut>
     </div>
   )
