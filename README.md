@@ -1,135 +1,318 @@
-# Turborepo starter
+# Boilerplate Full Stack - Architecture et Choix Techniques
 
-This Turborepo starter is maintained by the Turborepo core team.
+## 🏗️ Vue d'ensemble de l'architecture
 
-## Using this example
+Ce projet est un boilerplate full-stack moderne utilisant une architecture monorepo avec des technologies de pointe. Il implémente un système d'authentification complet, des paiements Stripe, et une interface utilisateur moderne.
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## 📁 Structure du Monorepo
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+boiler-done/
+├── apps/
+│   ├── client/          # Application React Router (Frontend)
+│   └── server/          # API Fastify (Backend)
+├── packages/
+│   ├── db/              # Base de données Drizzle ORM
+│   └── config/          # Configuration partagée (TypeScript, ESLint)
+└── docker-compose.yml   # Services de développement
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## 🛠️ Choix Techniques Détaillés
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### 1. **Monorepo avec Turborepo**
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+**Pourquoi Turborepo ?**
 
-### Develop
+- **Performance** : Cache intelligent et parallélisation des tâches
+- **Scalabilité** : Gestion efficace des dépendances entre packages
+- **DX (Developer Experience)** : Scripts unifiés et configuration centralisée
+- **CI/CD optimisé** : Builds incrémentaux et cache distribué
 
-To develop all apps and packages, run the following command:
+**Configuration :**
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```json
+{
+	"ui": "tui", // Interface utilisateur moderne
+	"tasks": {
+		"build": { "dependsOn": ["^build"] },
+		"dev": { "cache": false, "persistent": true }
+	}
+}
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### 2. **Frontend : React Router v7 + Vite**
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+**Choix de React Router v7 :**
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+- **Full-Stack** : SSR natif avec React Server Components
+- **Performance** : Hydratation partielle et streaming
+- **DX** : Type-safe routing avec génération automatique des types
+- **Modernité** : Support des dernières fonctionnalités React 19
 
-### Remote Caching
+**Stack Frontend :**
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```typescript
+// Technologies clés
+- React 19.1.0          // Framework UI
+- React Router 7.7.1    // Routing full-stack
+- Vite 6.3.3           // Build tool ultra-rapide
+- Tailwind CSS 4.1.4   // Styling utility-first
+- Radix UI             // Composants accessibles
+- TanStack Query 5.89.0 // State management serveur
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+**Configuration Vite :**
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```typescript
+export default defineConfig({
+	plugins: [
+		tailwindcss(), // Intégration Tailwind
+		reactRouter(), // Plugin React Router
+		tsconfigPaths(), // Support des paths TypeScript
+	],
+})
 ```
 
-## Useful Links
+### 3. **Backend : Fastify + Better Auth**
 
-Learn more about the power of Turborepo:
+**Pourquoi Fastify ?**
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- **Performance** : 2-3x plus rapide qu'Express
+- **Type Safety** : Support TypeScript natif
+- **Validation** : Intégration Zod pour la validation des schémas
+- **Plugins** : Architecture modulaire et écosystème riche
+
+**Stack Backend :**
+
+```typescript
+// Technologies clés
+- Fastify 5.6.0                    // Framework web
+- Better Auth 1.3.11              // Authentification moderne
+- Drizzle ORM 0.44.5              // ORM type-safe
+- PostgreSQL 17                   // Base de données relationnelle
+- Stripe 18.5.0                   // Paiements
+- Zod 4.1.11                      // Validation de schémas
+```
+
+**Configuration Fastify :**
+
+```typescript
+const app = Fastify({ logger: true })
+	.setValidatorCompiler(validatorCompiler) // Validation Zod
+	.setSerializerCompiler(serializerCompiler) // Sérialisation optimisée
+	.withTypeProvider<ZodTypeProvider>() // Type safety
+```
+
+### 4. **Authentification : Better Auth**
+
+**Pourquoi Better Auth ?**
+
+- **Type Safety** : Génération automatique des types TypeScript
+- **Modernité** : Support des dernières pratiques de sécurité
+- **Flexibilité** : Configuration déclarative et hooks personnalisables
+- **Intégrations** : Stripe, OAuth, email verification natifs
+
+**Fonctionnalités implémentées :**
+
+```typescript
+- Email/Password authentication
+- Email verification obligatoire
+- Password reset avec tokens sécurisés
+- OAuth GitHub (optionnel)
+- Sessions sécurisées avec cookies
+- Hooks personnalisés pour les emails
+- Intégration Stripe pour les abonnements
+```
+
+### 5. **Base de Données : Drizzle ORM + PostgreSQL**
+
+**Pourquoi Drizzle ?**
+
+- **Type Safety** : Schémas TypeScript-first
+- **Performance** : Requêtes SQL optimisées
+- **DX** : Auto-complétion et validation à la compilation
+- **Migration** : Système de migration robuste
+
+**Schéma utilisateur étendu :**
+
+```typescript
+export const user = pgTable('user', {
+	id: text('id').primaryKey(),
+	name: text('name').notNull(),
+	email: text('email').notNull().unique(),
+	emailVerified: boolean('email_verified').default(false),
+	// Champs personnalisés
+	address: text('address').notNull(),
+	city: text('city'),
+	region: text('region'),
+	postalCode: text('postal_code'),
+	country: text('country'),
+	stripeCustomerId: text('stripe_customer_id'),
+	// Timestamps automatiques
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at').$onUpdate(() => new Date()),
+})
+```
+
+### 6. **Paiements : Stripe Integration**
+
+**Fonctionnalités Stripe :**
+
+- **Abonnements** : 3 plans (Basic, Pro, Enterprise)
+- **Webhooks** : Gestion des événements en temps réel
+- **Emails** : Notifications automatiques de paiement
+- **Customer Portal** : Gestion des abonnements par l'utilisateur
+
+**Plans configurés :**
+
+```typescript
+export const plans = [
+	{ name: 'basic', priceId: 'price_...', limits: { projects: 3 } },
+	{ name: 'pro', priceId: 'price_...', limits: { projects: 10 } },
+	{ name: 'enterprise', priceId: 'price_...', limits: { projects: 100 } },
+]
+```
+
+### 7. **UI/UX : Radix UI + Tailwind CSS**
+
+**Design System :**
+
+- **Radix UI** : 40+ composants accessibles et personnalisables
+- **Tailwind CSS 4** : Version la plus récente avec nouvelles fonctionnalités
+- **Shadcn/ui** : Configuration "new-york" style
+- **Lucide React** : Icônes modernes et cohérentes
+
+**Configuration Shadcn :**
+
+```json
+{
+	"style": "new-york",
+	"tailwind": {
+		"baseColor": "neutral",
+		"cssVariables": true
+	},
+	"iconLibrary": "lucide"
+}
+```
+
+### 8. **TypeScript : Configuration Stricte**
+
+**Configuration ultra-stricte :**
+
+```json
+{
+	"strict": true,
+	"exactOptionalPropertyTypes": true,
+	"noUncheckedIndexedAccess": true,
+	"noImplicitReturns": true,
+	"noUnusedLocals": true,
+	"noUnusedParameters": true
+}
+```
+
+**Avantages :**
+
+- **Sécurité** : Détection des erreurs à la compilation
+- **Maintenabilité** : Code plus robuste et prévisible
+- **DX** : Auto-complétion et refactoring fiables
+
+### 9. **Développement : Docker Compose**
+
+**Services de développement :**
+
+```yaml
+services:
+  db: # PostgreSQL 17
+    image: postgres:17
+    environment:
+      - POSTGRES_DB=boilerplate
+    ports: ['5432:5432']
+
+  mailer: # MailDev pour les emails
+    image: maildev/maildev
+    ports: ['1080:1080', '1025:1025']
+```
+
+### 10. **Gestion des Emails : MJML + Nodemailer**
+
+**Stack email :**
+
+- **MJML** : Templates responsive et cross-client
+- **Nodemailer** : Envoi d'emails robuste
+- **MailDev** : Interface de test en développement
+
+**Templates disponibles :**
+
+- Welcome email
+- Email verification
+- Password reset
+- Payment confirmation
+
+## 🚀 Scripts de Développement
+
+```bash
+# Développement (tous les services)
+bun run dev
+
+# Build (production)
+bun run build
+
+# Linting
+bun run lint
+
+# Type checking
+bun run typecheck
+
+# Formatage
+bun run format
+```
+
+## 📦 Gestion des Dépendances
+
+**Package Manager :** Bun 1.2.22
+
+- **Performance** : 10-100x plus rapide que npm/yarn
+- **Compatibilité** : API compatible avec npm
+- **Built-in** : Bundler, test runner, et package manager
+
+**Workspaces :**
+
+```json
+{
+	"workspaces": ["apps/*", "packages/*", "packages/config/*"]
+}
+```
+
+## 🔧 Configuration des Outils
+
+### ESLint + Prettier
+
+- Configuration partagée dans `packages/config/`
+- Règles strictes pour la qualité du code
+- Formatage automatique
+
+### TypeScript
+
+- Configuration de base partagée
+- Builds optimisés avec `tsup`
+- Génération de types pour l'API
+
+## 🎯 Points Forts de l'Architecture
+
+1. **Type Safety End-to-End** : TypeScript strict de la DB à l'UI
+2. **Performance** : Vite + Fastify + Drizzle pour des temps de réponse optimaux
+3. **Developer Experience** : Hot reload, auto-complétion, et debugging facilité
+4. **Scalabilité** : Architecture modulaire et monorepo organisé
+5. **Sécurité** : Authentification robuste et validation stricte
+6. **Modernité** : Technologies de pointe et bonnes pratiques
+
+## 🚀 Déploiement
+
+Le projet est prêt pour le déploiement avec :
+
+- **Docker** : Configuration Docker Compose pour la production
+- **Build optimisé** : Scripts de build pour chaque environnement
+- **Variables d'environnement** : Configuration sécurisée
+- **Monitoring** : Logs structurés avec Fastify
+
+Cette architecture représente un boilerplate moderne et production-ready, optimisé pour le développement rapide et la maintenance à long terme.

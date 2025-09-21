@@ -4,8 +4,8 @@ import * as schema from '@workspace/db/schema/auth';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { createAuthMiddleware, openAPI } from 'better-auth/plugins';
-import { ConfirmPaymentMailer } from '~/mail/confirm-payment';
 import { plans } from '../constants/plans';
+import { ConfirmPaymentMailer } from '../mail/confirm-payment';
 import { ResetPasswordMailer } from '../mail/reset-password';
 import { VerifyEmailMaliler } from '../mail/verify-email';
 import { WelcomeMailer } from '../mail/welcome';
@@ -14,7 +14,7 @@ import { stripeClient } from '../utils/stripe';
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, STRIPE_WEBHOOK_SECRET } =
 	process.env;
 
-export const auth = betterAuth({
+export const auth: ReturnType<typeof betterAuth> = betterAuth({
 	trustedOrigins: ['http://localhost:5173', 'http://localhost:3000'],
 
 	database: drizzleAdapter(db, {
@@ -27,7 +27,7 @@ export const auth = betterAuth({
 		additionalFields: {
 			address: {
 				type: 'string',
-				required: true,
+				required: false,
 			},
 			city: {
 				type: 'string',
