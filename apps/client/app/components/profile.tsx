@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import z from 'zod';
 import { cn } from '~/lib/utils';
-import { useSession } from '~/utils/auth';
+import { auth, useSession } from '~/utils/auth';
 import { Button } from './ui/button';
 import {
 	Form,
@@ -18,11 +18,6 @@ import { Input } from './ui/input';
 
 const formSchema = z.object({
 	name: z.string(),
-	address: z.string(),
-	city: z.string(),
-	region: z.string(),
-	postalCode: z.string(),
-	country: z.string(),
 });
 export function Profile({ className, ...props }: React.ComponentProps<'div'>) {
 	const { data: session } = useSession();
@@ -31,15 +26,15 @@ export function Profile({ className, ...props }: React.ComponentProps<'div'>) {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: session?.user.name,
-			address: session?.user.address || '',
-			city: session?.user.city || '',
-			region: session?.user.region || '',
-			postalCode: session?.user.postalCode || '',
-			country: session?.user.country || '',
 		},
 	});
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
+			await auth.updateUser(values, {
+				onSuccess: () => {
+					toast.success('Les informations ont été mises à jour avec succès');
+				},
+			});
 		} catch (e) {
 			toast.error('An error occured during sign in.');
 		}
@@ -69,91 +64,11 @@ export function Profile({ className, ...props }: React.ComponentProps<'div'>) {
 							</FormItem>
 						)}
 					/>
-					<FormField
-						control={form.control}
-						name='address'
-						render={({ field }) => (
-							<FormItem className='grid gap-3'>
-								<FormLabel htmlFor='address'>address</FormLabel>
-								<FormControl>
-									<Input
-										// placeholder='example@domain.org'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='city'
-						render={({ field }) => (
-							<FormItem className='grid gap-3'>
-								<FormLabel htmlFor='city'>city</FormLabel>
-								<FormControl>
-									<Input
-										// placeholder='example@domain.org'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='region'
-						render={({ field }) => (
-							<FormItem className='grid gap-3'>
-								<FormLabel htmlFor='region'>region</FormLabel>
-								<FormControl>
-									<Input
-										// placeholder='example@domain.org'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='postalCode'
-						render={({ field }) => (
-							<FormItem className='grid gap-3'>
-								<FormLabel htmlFor='postalCode'>postalCode</FormLabel>
-								<FormControl>
-									<Input
-										// placeholder='example@domain.org'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='country'
-						render={({ field }) => (
-							<FormItem className='grid gap-3'>
-								<FormLabel htmlFor='country'>country</FormLabel>
-								<FormControl>
-									<Input
-										// placeholder='example@domain.org'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
 
 					<Button
 						type='submit'
 						className='w-full'>
-						Login
+						Save
 					</Button>
 				</form>
 			</Form>
