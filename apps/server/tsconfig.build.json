@@ -1,4 +1,0 @@
-{
-	"extends": ["./tsconfig.json", "@workspace/typescript/build.json"],
-	"noEmit": true
-}

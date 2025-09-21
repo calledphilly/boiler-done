@@ -122,6 +122,32 @@ const app = Fastify({ logger: true })
 - Sessions sécurisées avec cookies
 - Hooks personnalisés pour les emails
 - Intégration Stripe pour les abonnements
+- Client React avec hooks optimisés
+```
+
+**Configuration côté client :**
+
+```typescript
+// Client Better Auth pour React
+export const {
+	signOut,
+	signIn,
+	signUp,
+	useSession,
+	sendVerificationEmail,
+	requestPasswordReset,
+	resetPassword,
+	subscription,
+	stripe,
+	...auth
+} = createAuthClient({
+	baseURL: 'http://localhost:3000',
+	plugins: [
+		stripeClient({
+			subscription: true, // Gestion des abonnements
+		}),
+	],
+})
 ```
 
 ### 5. **Base de Données : Drizzle ORM + PostgreSQL**
@@ -140,7 +166,8 @@ export const user = pgTable('user', {
 	id: text('id').primaryKey(),
 	name: text('name').notNull(),
 	email: text('email').notNull().unique(),
-	emailVerified: boolean('email_verified').default(false),
+	emailVerified: boolean('email_verified').default(false).notNull(),
+	image: text('image'),
 	// Champs personnalisés
 	address: text('address').notNull(),
 	city: text('city'),
@@ -149,10 +176,28 @@ export const user = pgTable('user', {
 	country: text('country'),
 	stripeCustomerId: text('stripe_customer_id'),
 	// Timestamps automatiques
-	createdAt: timestamp('created_at').defaultNow(),
-	updatedAt: timestamp('updated_at').$onUpdate(() => new Date()),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at')
+		.$onUpdate(() => new Date())
+		.notNull(),
 })
 ```
+
+**Configuration Better Auth :**
+
+```typescript
+user: {
+	additionalFields: {
+		address: { type: 'string', required: false },
+		city: { type: 'string', required: false },
+		region: { type: 'string', required: false },
+		postalCode: { type: 'string', required: false },
+		country: { type: 'string', required: false },
+	},
+}
+```
+
+**Note importante :** Il y a une incohérence entre le schéma DB (address notNull) et la config Better Auth (required: false). Cette configuration permet une flexibilité lors de l'inscription tout en maintenant la contrainte en base.
 
 ### 6. **Paiements : Stripe Integration**
 
@@ -282,6 +327,41 @@ bun run format
 	"workspaces": ["apps/*", "packages/*", "packages/config/*"]
 }
 ```
+
+### Exports Conditionnels et Type Safety
+
+**Stratégie d'exports moderne :**
+
+Chaque package utilise des exports conditionnels pour une meilleure compatibilité et type safety :
+
+**Package Database (`@workspace/db`) :**
+
+```json
+{
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./schema": {
+			"types": "./dist/schema.d.ts",
+			"default": "./dist/schema.js"
+		},
+		"./schema/auth": {
+			"types": "./dist/schema/auth.d.ts",
+			"default": "./dist/schema/auth.js"
+		}
+	}
+}
+```
+
+**Avantages des exports conditionnels :**
+
+- **Type Safety** : Import automatique des types TypeScript
+- **Tree Shaking** : Import sélectif des modules nécessaires
+- **Compatibilité** : Support des bundlers modernes (Vite, Webpack, etc.)
+- **Performance** : Chargement optimisé des dépendances
+- **DX** : Auto-complétion et navigation dans l'IDE
 
 ## 🔧 Configuration des Outils
 

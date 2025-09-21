@@ -1,18 +1,11 @@
 {
-	"name": "@workspace/server",
+	"name": "server",
 	"module": "index.ts",
 	"type": "module",
 	"private": true,
 	"scripts": {
 		"dev": "bun run --watch src/index.ts",
-		"build": "tsc -p tsconfig.build.json",
 		"db:generate": "bun x @better-auth/cli generate --output ../../packages/db/src/schema/auth.ts"
-	},
-	"exports": {
-		"./src/utils/auth": {
-			"types": "./dist/utils/auth.d.ts",
-			"default": "./dist/utils/auth.js"
-		}
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
