@@ -1,8 +1,16 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import api from './api';
+import {
+  serializerCompiler,
+  validatorCompiler,
+  type ZodTypeProvider,
+} from 'fastify-type-provider-zod';
 
-const app = Fastify({ logger: true });
+const app = Fastify({ logger: true })
+  .setValidatorCompiler(validatorCompiler)
+  .setSerializerCompiler(serializerCompiler)
+  .withTypeProvider<ZodTypeProvider>();
 
 app.register(cors, {
   origin: [

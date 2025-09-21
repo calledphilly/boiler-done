@@ -1,19 +1,20 @@
 <mjml>
-  <mj-body>
-    <mj-section>
+  <mj-body background-color="#f0f0f0">
+    <mj-section background-color="#ffffff" padding="20px" border-radius="8px">
       <mj-column>
-        <mj-text font-size="20px" font-weight="bold">
-          Paiement confirmé !
-        </mj-text>
-        <mj-text>
-          Bonjour {{ name }}, votre paiement a bien été pris en compte.
-        </mj-text>
-        <mj-text>
+        <mj-text font-size="20px" font-weight="bold" color="#333333"> Paiement confirmé ! </mj-text>
+
+        <mj-text font-size="16px" color="#555555"> Bonjour{{#if name}} {{ name }}{{/if}}, votre paiement a bien été pris en compte. </mj-text>
+
+        <mj-text font-size="14px" color="#555555">
           Détails de la commande :<br />
-          ID : {{ order_id }}<br />
-          Montant : {{ amount }}
+          ID : {{order_id}}<br />
+          Montant : {{amount}} {{currency}}
         </mj-text>
-        <mj-button href="{{account_url}}"> Voir ma commande </mj-button>
+
+        {{#if account_url}}
+        <mj-button href="{{account_url}}" background-color="#6b46c1" color="#ffffff" font-weight="bold"> Voir ma commande </mj-button>
+        {{/if}}
       </mj-column>
     </mj-section>
   </mj-body>

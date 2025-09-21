@@ -1,11 +1,9 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import common from './common';
-import v1 from './v1';
-import { plugin } from '../utils/plugin';
+import { plugin } from '../../utils/plugin';
+import plans from './plans';
 
 const routes: FastifyPluginAsyncZod = async (fastify) => {
-  fastify.register(common);
-  fastify.register(v1, { prefix: '/v1' });
+  fastify.register(plans);
 };
 
 export default plugin(routes);

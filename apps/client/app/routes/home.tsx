@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className='flex min-h-svh flex-col items-center justify-center'>
       <SignedIn>
-        <Navigate to='/profile' />
+        <Navigate to='/dashboard' />
       </SignedIn>
       <SignedOut>
         <Navigate to='/sign-in' />

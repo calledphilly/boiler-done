@@ -9,12 +9,14 @@ export const {
   sendVerificationEmail,
   requestPasswordReset,
   resetPassword,
+  subscription,
+  stripe,
   ...auth
 } = createAuthClient({
   baseURL: 'http://localhost:3000',
   plugins: [
     stripeClient({
-      subscription: true, //if you want to enable subscription management
+      subscription: true,
     }),
   ],
 });

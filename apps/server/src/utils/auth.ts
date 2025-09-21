@@ -8,6 +8,8 @@ import { ResetPasswordMailer } from '../mail/reset-password';
 import { VerifyEmailMaliler } from '../mail/verify-email';
 import { WelcomeMailer } from '../mail/welcome';
 import { stripeClient } from '../utils/stripe';
+import { plans } from '../constants/plans';
+import { ConfirmPaymentMailer } from '~/mail/confirm-payment';
 
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, STRIPE_WEBHOOK_SECRET } =
   process.env;
@@ -100,23 +102,31 @@ export const auth = betterAuth({
             createCustomerOnSignUp: true,
             subscription: {
               enabled: true,
-              plans: [
-                {
-                  name: 'basic',
-                  priceId: 'price_1S8yuNRvGJ6lPiv4fERR99U9',
-                  annualDiscountPriceId: 'price_1S8yuNRvGJ6lPiv4zBKnutcI',
-                },
-                {
-                  name: 'pro',
-                  priceId: 'price_1S92oIRvGJ6lPiv4zZk6Lq64',
-                  annualDiscountPriceId: 'price_1S92p3RvGJ6lPiv4qs1g2PyZ',
-                },
-                {
-                  name: 'enterprise',
-                  priceId: 'price_1S92r0RvGJ6lPiv4ojNbb8zy',
-                  annualDiscountPriceId: 'price_1S92r0RvGJ6lPiv4k7DIqB9c',
-                },
-              ],
+              authorizeReference: async (user) => {
+                return true;
+              },
+              plans,
+            },
+            onEvent: async (event) => {
+              switch (event.type) {
+                case 'checkout.session.completed': {
+                  if (event.data.object.customer_email) {
+                    const mailer = new ConfirmPaymentMailer();
+
+                    await mailer.send({
+                      to: event.data.object.customer_email,
+                      data: {
+                        order_id: event.data.object.id,
+                        amount: event.data.object.amount_total || 0,
+                        currency: event.data.object.currency || 'USD',
+                        account_url: event.data.object.success_url || undefined,
+                        name:
+                          event.data.object.customer_details?.name || undefined,
+                      },
+                    });
+                  }
+                }
+              }
             },
           }),
         ]
