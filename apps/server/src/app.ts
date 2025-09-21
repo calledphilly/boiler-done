@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
+import rawBody from 'fastify-raw-body';
 import api from './api';
 import {
   serializerCompiler,
@@ -11,6 +12,14 @@ const app = Fastify({ logger: true })
   .setValidatorCompiler(validatorCompiler)
   .setSerializerCompiler(serializerCompiler)
   .withTypeProvider<ZodTypeProvider>();
+
+// Enregistrer le plugin raw-body pour les webhooks
+app.register(rawBody, {
+  field: 'rawBody', // ajoute request.rawBody
+  global: false, // ne l'active que pour les routes qui le demandent
+  encoding: false, // garde le Buffer brut
+  runFirst: true, // execute avant les autres plugins
+});
 
 app.register(cors, {
   origin: [

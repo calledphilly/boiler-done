@@ -3,7 +3,6 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { stripeClient } from '../../utils/stripe';
 import z from 'zod/v4';
 import { plans } from '../../constants/plans';
-import type Stripe from 'stripe';
 
 // Schéma de réponse pour un plan
 const PlanSchema = z.object({
@@ -60,6 +59,7 @@ const routes: FastifyPluginAsyncZod = async (fastify) => {
         // Récupérer tous les prix depuis Stripe
         const prices = await stripeClient.prices.list({
           active: true,
+          limit: 100,
         });
 
         const formattedPlans = [];

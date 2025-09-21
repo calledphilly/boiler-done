@@ -57,6 +57,11 @@ export function LoginForm({
         },
       });
 
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
       if (data) {
         toast.success(`Successfully signed in as ${data.user.name} !`);
         const redirect = params.get('redirect');

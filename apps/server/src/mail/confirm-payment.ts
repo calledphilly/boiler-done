@@ -6,7 +6,7 @@ interface MailData {
   order_id: string;
   amount: number;
   currency: string;
-  account_url?: string | undefined;
+  invoice_url?: string | undefined;
 }
 
 export class ConfirmPaymentMailer extends Mailer<MailData> {
