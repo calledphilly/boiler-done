@@ -17,12 +17,37 @@ const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, STRIPE_WEBHOOK_SECRET } =
 export const auth = betterAuth({
   trustedOrigins: ['http://localhost:5173', 'http://localhost:3000'],
 
-  database: drizzleAdapter(db, {
-    provider: 'pg',
-    schema: {
-      ...schema,
-    },
-  }),
+
+	database: drizzleAdapter(db, {
+		provider: 'pg',
+		schema: {
+			...schema,
+		},
+	}),
+	user: {
+		additionalFields: {
+			address: {
+				type: 'string',
+				required: true,
+			},
+			city: {
+				type: 'string',
+				required: false,
+			},
+			region: {
+				type: 'string',
+				required: false,
+			},
+			postalCode: {
+				type: 'string',
+				required: false,
+			},
+			country: {
+				type: 'string',
+				required: false,
+			},
+		},
+	},
 
   emailAndPassword: {
     enabled: true,

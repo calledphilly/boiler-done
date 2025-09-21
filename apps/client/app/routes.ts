@@ -12,8 +12,12 @@ export default [
   route('/verify-email', 'routes/auth/verify-email.tsx'),
   route('/forgot-password', 'routes/auth/forgot-password.tsx'),
   route('/reset-password', 'routes/auth/reset-password.tsx'),
+
   layout('routes/layout.tsx', [
     route('/plans', 'routes/plans.tsx'),
     route('/dashboard', 'routes/dashboard.tsx'),
   ]),
+
+  route('/profile', 'routes/profile.tsx'),
+
 ] satisfies RouteConfig;

@@ -17,7 +17,16 @@ export const user = pgTable('user', {
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
+<<<<<<< Updated upstream
   stripeCustomerId: text('stripe_customer_id'),
+=======
+  stripeCustomerId: text("stripe_customer_id"),
+  address: text("address").notNull(),
+  city: text("city"),
+  region: text("region"),
+  postalCode: text("postal_code"),
+  country: text("country"),
+>>>>>>> Stashed changes
 });
 
 export const session = pgTable('session', {
