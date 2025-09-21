@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "boilerplate-api-collection",
+		"name": "Boilerplate API",
+		"description": "Collection Postman pour tester l'API du boilerplate full-stack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "boilerplate-api"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securePassword123\",\n  \"address\": \"123 Main St\",\n  \"city\": \"New York\",\n  \"region\": \"NY\",\n  \"postalCode\": \"10001\",\n  \"country\": \"US\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/sign-up",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "sign-up"]
+						},
+						"description": "Créer un nouveau compte utilisateur"
+					},
+					"response": []
+				},
+				{
+					"name": "Sign In",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securePassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/sign-in",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "sign-in"]
+						},
+						"description": "Se connecter avec email et mot de passe"
+					},
+					"response": []
+				},
+				{
+					"name": "Sign Out",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{session_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/sign-out",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "sign-out"]
+						},
+						"description": "Se déconnecter"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Session",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{session_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/session",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "session"]
+						},
+						"description": "Récupérer la session actuelle"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"verification_token_123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/verify-email",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "verify-email"]
+						},
+						"description": "Vérifier l'email avec le token"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/forgot-password",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "forgot-password"]
+						},
+						"description": "Demander un reset de mot de passe"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"reset_token_123\",\n  \"password\": \"newSecurePassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/reset-password",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "reset-password"]
+						},
+						"description": "Reset le mot de passe avec le token"
+					},
+					"response": []
+				},
+				{
+					"name": "GitHub OAuth",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/auth/sign-in/github",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "sign-in", "github"]
+						},
+						"description": "Redirection vers GitHub OAuth"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints d'authentification"
+		},
+		{
+			"name": "Payments & Subscriptions",
+			"item": [
+				{
+					"name": "Create Checkout Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{session_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"plan\": \"pro\",\n  \"billing\": \"monthly\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/stripe/create-checkout-session",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "stripe", "create-checkout-session"]
+						},
+						"description": "Créer une session de paiement Stripe"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Portal Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{session_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"returnUrl\": \"http://localhost:5173/dashboard\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/stripe/create-portal-session",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "stripe", "create-portal-session"]
+						},
+						"description": "Créer une session du portail client Stripe"
+					},
+					"response": []
+				},
+				{
+					"name": "Stripe Webhook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Stripe-Signature",
+								"value": "{{stripe_signature}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"evt_123\",\n  \"type\": \"checkout.session.completed\",\n  \"data\": {\n    \"object\": {\n      \"id\": \"cs_123\",\n      \"customer_email\": \"john@example.com\",\n      \"amount_total\": 2999,\n      \"currency\": \"usd\",\n      \"success_url\": \"http://localhost:5173/dashboard\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/stripe/webhook",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "stripe", "webhook"]
+						},
+						"description": "Webhook Stripe pour les événements de paiement"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de paiement et d'abonnement"
+		},
+		{
+			"name": "Plans",
+			"item": [
+				{
+					"name": "Get All Plans",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/v1/plans",
+							"host": ["{{base_url}}"],
+							"path": ["v1", "plans"]
+						},
+						"description": "Récupérer tous les plans disponibles"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints des plans et tarifs"
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						},
+						"description": "Vérifier l'état de l'API"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de monitoring"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-extract session token from sign-in response",
+					"if (pm.response && pm.response.json() && pm.response.json().session) {",
+					"    pm.environment.set('session_token', pm.response.json().session.token);",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-extract session token from sign-in response",
+					"if (pm.response.json() && pm.response.json().session) {",
+					"    pm.environment.set('session_token', pm.response.json().session.token);",
+					"    console.log('Session token saved:', pm.response.json().session.token);",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "session_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "stripe_signature",
+			"value": "whsec_...",
+			"type": "string"
+		}
+	]
+}
+

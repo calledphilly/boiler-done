@@ -708,3 +708,36 @@ STRIPE_WEBHOOK_SECRET=...
 ```
 
 Votre projet est maintenant prêt pour le développement ! 🎉
+
+## 📚 Documentation
+
+### Fichiers de Documentation
+
+- **[README.md](./README.md)** - Guide de démarrage et vue d'ensemble
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Choix techniques détaillés et architecture
+- **[API.md](./API.md)** - Documentation complète de l'API REST
+- **[Boilerplate-API.postman_collection.json](./Boilerplate-API.postman_collection.json)** - Collection Postman pour tester l'API
+
+### Documentation Interactive
+
+- **OpenAPI** : `http://localhost:3000/api/auth/reference` - Documentation interactive de l'API
+- **Drizzle Studio** : `http://localhost:4983` - Interface de gestion de la base de données
+- **MailDev** : `http://localhost:1080` - Interface de test des emails
+
+### Import de la Collection Postman
+
+1. Ouvrir Postman
+2. Cliquer sur "Import"
+3. Sélectionner le fichier `Boilerplate-API.postman_collection.json`
+4. Configurer les variables d'environnement :
+   - `base_url` : `http://localhost:3000/api`
+   - `session_token` : (sera automatiquement rempli après connexion)
+   - `stripe_signature` : `whsec_...` (depuis Stripe CLI)
+
+### Workflow de Test
+
+1. **Démarrer les services** : `bun run dev`
+2. **Importer la collection** Postman
+3. **Tester l'inscription** : `Sign Up`
+4. **Tester la connexion** : `Sign In` (le token sera automatiquement sauvegardé)
+5. **Tester les autres endpoints** avec le token automatique
