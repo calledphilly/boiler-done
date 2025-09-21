@@ -396,3 +396,315 @@ Le projet est prêt pour le déploiement avec :
 - **Monitoring** : Logs structurés avec Fastify
 
 Cette architecture représente un boilerplate moderne et production-ready, optimisé pour le développement rapide et la maintenance à long terme.
+
+## 🚀 Setup et Installation
+
+### Prérequis
+
+#### 1. **Bun (Package Manager)**
+
+**Installation selon l'OS :**
+
+**macOS :**
+
+```bash
+# Via Homebrew (recommandé)
+brew install bun
+
+# Ou via curl
+curl -fsSL https://bun.sh/install | bash
+```
+
+**Linux :**
+
+```bash
+# Installation directe
+curl -fsSL https://bun.sh/install | bash
+
+# Ou via npm (si Node.js est installé)
+npm install -g bun
+```
+
+**Windows :**
+
+```powershell
+# Via PowerShell
+irm bun.sh/install.ps1 | iex
+
+# Ou via npm
+npm install -g bun
+```
+
+**Vérification :**
+
+```bash
+bun --version
+# Doit afficher : 1.2.22 ou plus récent
+```
+
+#### 2. **Docker et Docker Compose**
+
+**macOS :**
+
+```bash
+# Via Homebrew
+brew install --cask docker
+
+# Ou télécharger Docker Desktop depuis le site officiel
+# https://www.docker.com/products/docker-desktop/
+```
+
+**Linux (Ubuntu/Debian) :**
+
+```bash
+# Installation Docker
+sudo apt update
+sudo apt install docker.io docker-compose-plugin
+
+# Ajouter l'utilisateur au groupe docker
+sudo usermod -aG docker $USER
+# Redémarrer la session ou faire : newgrp docker
+```
+
+**Windows :**
+
+- Télécharger Docker Desktop depuis le site officiel
+- Installer et redémarrer l'ordinateur
+
+**Vérification :**
+
+```bash
+docker --version
+docker compose version
+```
+
+#### 3. **Stripe CLI**
+
+**macOS :**
+
+```bash
+# Via Homebrew
+brew install stripe/stripe-cli/stripe
+
+# Ou télécharger depuis GitHub
+# https://github.com/stripe/stripe-cli/releases
+```
+
+**Linux :**
+
+```bash
+# Télécharger et installer
+wget https://github.com/stripe/stripe-cli/releases/latest/download/stripe_*_linux_x86_64.tar.gz
+tar -xvf stripe_*_linux_x86_64.tar.gz
+sudo mv stripe /usr/local/bin/
+
+# Ou via snap
+sudo snap install stripe
+```
+
+**Windows :**
+
+```powershell
+# Via Chocolatey
+choco install stripe-cli
+
+# Ou télécharger l'exécutable depuis GitHub
+# https://github.com/stripe/stripe-cli/releases
+```
+
+**Vérification :**
+
+```bash
+stripe --version
+```
+
+### Installation du Projet
+
+#### 1. **Cloner et installer les dépendances**
+
+```bash
+# Cloner le projet
+git clone <votre-repo-url>
+cd boiler-done
+
+# Installer toutes les dépendances
+bun install
+```
+
+#### 2. **Configuration de l'environnement**
+
+Créer un fichier `.env` à la racine :
+
+```bash
+# Base de données
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/boilerplate"
+
+# Better Auth
+BETTER_AUTH_SECRET="votre-secret-super-securise"
+BETTER_AUTH_URL="http://localhost:3000"
+
+# Client
+CLIENT_ORIGIN="http://localhost:5173"
+
+# GitHub OAuth (optionnel)
+GITHUB_CLIENT_ID="votre-github-client-id"
+GITHUB_CLIENT_SECRET="votre-github-client-secret"
+
+# Stripe
+STRIPE_SECRET_KEY="sk_test_..."
+STRIPE_PUBLISHABLE_KEY="pk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+
+# Email (pour le développement)
+SMTP_HOST="localhost"
+SMTP_PORT="1025"
+SMTP_USER=""
+SMTP_PASS=""
+```
+
+#### 3. **Démarrage des services**
+
+```bash
+# Démarrer PostgreSQL et MailDev
+docker compose up -d
+
+# Vérifier que les services sont actifs
+docker compose ps
+```
+
+**Services disponibles :**
+
+- **PostgreSQL** : `localhost:5432`
+- **MailDev** : `http://localhost:1080` (interface web)
+
+#### 4. **Configuration de la base de données**
+
+```bash
+# Générer les migrations
+bun run db:generate
+
+# Appliquer les migrations
+bun run db:migrate
+
+# Vérifier la connexion
+bun run db:studio  # Interface web Drizzle (optionnel)
+```
+
+#### 5. **Configuration Stripe**
+
+```bash
+# Se connecter à Stripe
+stripe login
+
+# Écouter les webhooks en local
+stripe listen --forward-to localhost:3000/api/auth/stripe/webhook
+
+# Dans un autre terminal, récupérer le webhook secret
+# Copier la clé "whsec_..." dans votre .env
+```
+
+#### 6. **Démarrage du développement**
+
+```bash
+# Démarrer tous les services en mode développement
+bun run dev
+
+# Ou démarrer individuellement :
+# Terminal 1 - Backend
+cd apps/server && bun run dev
+
+# Terminal 2 - Frontend
+cd apps/client && bun run dev
+```
+
+### URLs de Développement
+
+- **Frontend** : http://localhost:5173
+- **Backend API** : http://localhost:3000
+- **MailDev** : http://localhost:1080
+- **OpenAPI** : http://localhost:3000/api/auth/reference
+- **Drizzle Studio** : http://localhost:4983 (si activé)
+
+### Commandes Utiles
+
+```bash
+# Développement
+bun run dev              # Démarrer tous les services
+bun run build            # Build de production
+bun run lint             # Linter le code
+bun run typecheck        # Vérifier les types TypeScript
+bun run format           # Formater le code
+
+# Base de données
+bun run db:generate      # Générer les migrations
+bun run db:migrate       # Appliquer les migrations
+bun run db:studio        # Interface web Drizzle
+
+# Docker
+docker compose up -d     # Démarrer les services
+docker compose down      # Arrêter les services
+docker compose logs      # Voir les logs
+```
+
+### Dépannage
+
+#### Problèmes courants :
+
+**1. Port déjà utilisé :**
+
+```bash
+# Vérifier les ports utilisés
+lsof -i :3000  # macOS/Linux
+netstat -ano | findstr :3000  # Windows
+
+# Arrêter le processus ou changer le port
+```
+
+**2. Erreur de connexion à la base :**
+
+```bash
+# Vérifier que PostgreSQL est démarré
+docker compose ps
+
+# Redémarrer les services
+docker compose restart db
+```
+
+**3. Erreur Stripe webhook :**
+
+```bash
+# Vérifier que le webhook est actif
+stripe listen --forward-to localhost:3000/api/auth/stripe/webhook
+
+# Vérifier la clé dans .env
+echo $STRIPE_WEBHOOK_SECRET
+```
+
+**4. Erreurs TypeScript :**
+
+```bash
+# Nettoyer et réinstaller
+rm -rf node_modules
+bun install
+
+# Vérifier les types
+bun run typecheck
+```
+
+### Structure des Variables d'Environnement
+
+```bash
+# Obligatoires
+DATABASE_URL=postgresql://...
+BETTER_AUTH_SECRET=...
+BETTER_AUTH_URL=...
+
+# Optionnelles (pour fonctionnalités avancées)
+GITHUB_CLIENT_ID=...
+GITHUB_CLIENT_SECRET=...
+STRIPE_SECRET_KEY=...
+STRIPE_PUBLISHABLE_KEY=...
+STRIPE_WEBHOOK_SECRET=...
+```
+
+Votre projet est maintenant prêt pour le développement ! 🎉
